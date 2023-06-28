@@ -1,37 +1,92 @@
 <template>
   <ion-page>
-    <ion-header :translucent="true">
-      <ion-toolbar>
-        <ion-title>Blank</ion-title>
-      </ion-toolbar>
-    </ion-header>
-
     <ion-content :fullscreen="true">
       <ion-header collapse="condense">
         <ion-toolbar>
-          <ion-title size="large">Blank</ion-title>
+          <ion-title>Aplikasi Panggilan Telepon</ion-title>
         </ion-toolbar>
       </ion-header>
 
       <div id="container">
-        <strong>Ready to create an app?</strong>
-        <p>Start with Ionic <a target="_blank" rel="noopener noreferrer" href="https://ionicframework.com/docs/components">UI Components</a></p>
+        <p><strong>Nomor yang dihubungi:</strong></p>
+        <ion-input v-model="phoneNumber" aria-label="Phone" fill="solid" type="tel" placeholder="+62 xxx xxxx xxxx" v-maskito="phoneOptions"></ion-input>
+        <ion-button shape="round" expand="full" @click="makeCall">
+          Panggil
+        </ion-button>
       </div>
+
+      <ion-alert
+        :is-open="isError"
+        header="Gagal"
+        sub-header="Nomor tidak valid"
+        message="Harap masukan nomor HP yang valid"
+        :buttons="alertButtons"
+        @didDismiss="setOpen(false)"
+      ></ion-alert>
     </ion-content>
+    <ion-footer>
+      <ion-toolbar>
+        <ion-title size="small">043270718 - Ahmad Nurfadilah - Jakarta</ion-title>
+      </ion-toolbar>
+    </ion-footer>
   </ion-page>
 </template>
 
 <script setup lang="ts">
-import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar } from '@ionic/vue';
+import { IonContent, IonHeader, IonFooter, IonInput, IonPage, IonTitle, IonToolbar } from '@ionic/vue';
+import { maskito as vMaskito } from '@maskito/vue';
+import { ref } from 'vue';
+
+const isError = ref(false);
+const phoneNumber = ref("");
+const alertButtons = ['OK'];
+
+const phoneOptions = {
+  mask: ['+', '6', '2', ' ', /\d/, /\d/, /\d/, ' ', /\d/, /\d/, /\d/, /\d/, ' ', /\d/, /\d/, /\d/, /\d/],
+  elementPredicate: (el: HTMLIonInputElement) => {
+    return new Promise((resolve) => {
+      requestAnimationFrame(async () => {
+        const input = await el.getInputElement();
+        resolve(input);
+      });
+    });
+  },
+};
+
+const setOpen = (state: boolean) => {
+  isError.value = state;
+};
+
+const makeCall = () => {
+  if (phoneNumber.value) {
+    window.open(`tel:${phoneNumber.value}`, "_system");
+  } else {
+    setOpen(true);
+    // alert("Mohon masukkan nomor telepon");
+  }
+}
 </script>
 
 <style scoped>
+ion-content{
+  --ion-background-color:#F2E3DB;
+}
+
+ion-footer ion-toolbar {
+  --background: #41644A;
+}
+
+ion-footer ion-toolbar ion-title {
+  --color: #F2E3DB;
+  font-weight: bold;
+  margin-top: .5rem;
+}
+
 #container {
   text-align: center;
-  
   position: absolute;
-  left: 0;
-  right: 0;
+  left: 2rem;
+  right: 2rem;
   top: 50%;
   transform: translateY(-50%);
 }
@@ -46,11 +101,5 @@ import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar } from '@ionic/vue
   line-height: 22px;
   
   color: #8c8c8c;
-  
-  margin: 0;
-}
-
-#container a {
-  text-decoration: none;
 }
 </style>
