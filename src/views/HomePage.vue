@@ -8,9 +8,9 @@
       </ion-header>
 
       <div id="container">
-        <p><strong>Nomor yang dihubungi:</strong></p>
+        <p><strong>Nomor yang dihubungiiii:</strong></p>
         <ion-input v-model="phoneNumber" aria-label="Phone" fill="solid" type="tel" placeholder="+62 xxx xxxx xxxx" v-maskito="phoneOptions"></ion-input>
-        <ion-button shape="round" expand="full" @click="makeCall">
+        <ion-button expand="block" color="primary" @click="makeCall">
           Panggil
         </ion-button>
       </div>
@@ -33,7 +33,7 @@
 </template>
 
 <script setup lang="ts">
-import { IonContent, IonHeader, IonFooter, IonInput, IonPage, IonTitle, IonToolbar } from '@ionic/vue';
+import { IonButton, IonAlert, IonContent, IonHeader, IonFooter, IonInput, IonPage, IonTitle, IonToolbar } from '@ionic/vue';
 import { maskito as vMaskito } from '@maskito/vue';
 import { ref } from 'vue';
 
@@ -79,7 +79,6 @@ ion-footer ion-toolbar {
 ion-footer ion-toolbar ion-title {
   --color: #F2E3DB;
   font-weight: bold;
-  margin-top: .5rem;
 }
 
 #container {
